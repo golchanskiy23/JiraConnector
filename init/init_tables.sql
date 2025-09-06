@@ -1,3 +1,5 @@
+ALTER DATABASE testdb set timezone to 'UTC';
+
 create table project(
     id bigserial PRIMARY KEY,
     key text,
@@ -24,10 +26,10 @@ create table issues(
     status text,
     priority text,
     reporter_id bigint,
-    created timestamp,
-    updated timestamp,
+    created timestamptz not null,
+    updated timestamptz not null,
     resolution text,
-    duedate timestamp,
+    duedate timestamptz not null,
     labels text[],
     components text[],
     fix_versions text[],
@@ -43,7 +45,7 @@ create table status_change(
     id bigserial PRIMARY KEY,
     issue_id bigint,
     author_id bigint,
-    created timestamp,
+    created timestamptz not null ,
     field text,
     from_value text,
     from_string text,
@@ -52,3 +54,18 @@ create table status_change(
     FOREIGN KEY (issue_id) references issues(id),
     FOREIGN KEY (author_id) references author(id)
 );
+
+
+create user pguser with password 'pgpwd';
+grant connect on database testdb to pguser;
+grant usage on schema public to pguser;
+grant select, insert, update, delete on project, issues, author, status_change to pguser;
+grant usage, select, update on all sequences in schema public to pguser;
+
+alter default privileges in schema public
+grant select, insert, delete, update on tables to pguser;
+
+alter default privileges in schema public
+grant usage, select, update on sequences to pguser;
+
+create role replicator with replication login password 'postgres1';
