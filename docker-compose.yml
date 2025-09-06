@@ -1,0 +1,30 @@
+# запуск базы данных и pgAdmin
+#version: "3.8"
+
+services:
+  db:
+    image: postgres
+    container_name: "jira_postgres_database"
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: testdb
+    restart:
+      always
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: "pgadmin4"
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.ru
+      PGADMIN_DEFAULT_PASSWORD: secretdnejnej3ekj13
+    restart:
+      always
+    depends_on:
+      - db
