@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+service JiraPuller{
+    rpc GetProjects(ProjectsRequest) returns (ProjectsResponse){}
+    rpc GetProject(Key) returns (ID){};
+}
+
+message ProjectsRequest {
+  int32 limit = 1;
+  int32 page = 2;
+  string search = 3;
+}
+
+message ProjectsResponse {
+  repeated Project projects = 1;
+  PageInfo pageInfo = 2;
+}
+
+message Project {
+  string key = 1;
+  string name = 2;
+  string url = 3;
+  string description = 4;
+}
+
+message PageInfo {
+  int32 pageCount = 1;
+  int32 currentPage = 2;
+  int32 projectsCount = 3;
+}
+
+message Key {
+  string key = 1;
+}
+
+message ID {
+  uint32 id = 1;
+}
