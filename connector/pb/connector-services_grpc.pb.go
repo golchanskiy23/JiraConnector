@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	JiraPuller_GetProjects_FullMethodName = "/JiraPuller/GetProjects"
-	JiraPuller_GetProject_FullMethodName  = "/JiraPuller/GetProject"
+	JiraPuller_GetProjects_FullMethodName  = "/JiraPuller/GetProjects"
+	JiraPuller_FetchProject_FullMethodName = "/JiraPuller/FetchProject"
 )
 
 // JiraPullerClient is the client API for JiraPuller service.
@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type JiraPullerClient interface {
 	GetProjects(ctx context.Context, in *ProjectsRequest, opts ...grpc.CallOption) (*ProjectsResponse, error)
-	GetProject(ctx context.Context, in *Key, opts ...grpc.CallOption) (*ID, error)
+	FetchProject(ctx context.Context, in *Key, opts ...grpc.CallOption) (*ID, error)
 }
 
 type jiraPullerClient struct {
@@ -49,10 +49,10 @@ func (c *jiraPullerClient) GetProjects(ctx context.Context, in *ProjectsRequest,
 	return out, nil
 }
 
-func (c *jiraPullerClient) GetProject(ctx context.Context, in *Key, opts ...grpc.CallOption) (*ID, error) {
+func (c *jiraPullerClient) FetchProject(ctx context.Context, in *Key, opts ...grpc.CallOption) (*ID, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ID)
-	err := c.cc.Invoke(ctx, JiraPuller_GetProject_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, JiraPuller_FetchProject_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (c *jiraPullerClient) GetProject(ctx context.Context, in *Key, opts ...grpc
 // for forward compatibility.
 type JiraPullerServer interface {
 	GetProjects(context.Context, *ProjectsRequest) (*ProjectsResponse, error)
-	GetProject(context.Context, *Key) (*ID, error)
+	FetchProject(context.Context, *Key) (*ID, error)
 	mustEmbedUnimplementedJiraPullerServer()
 }
 
@@ -78,8 +78,8 @@ type UnimplementedJiraPullerServer struct{}
 func (UnimplementedJiraPullerServer) GetProjects(context.Context, *ProjectsRequest) (*ProjectsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProjects not implemented")
 }
-func (UnimplementedJiraPullerServer) GetProject(context.Context, *Key) (*ID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProject not implemented")
+func (UnimplementedJiraPullerServer) FetchProject(context.Context, *Key) (*ID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchProject not implemented")
 }
 func (UnimplementedJiraPullerServer) mustEmbedUnimplementedJiraPullerServer() {}
 func (UnimplementedJiraPullerServer) testEmbeddedByValue()                    {}
@@ -120,20 +120,20 @@ func _JiraPuller_GetProjects_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _JiraPuller_GetProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _JiraPuller_FetchProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Key)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(JiraPullerServer).GetProject(ctx, in)
+		return srv.(JiraPullerServer).FetchProject(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: JiraPuller_GetProject_FullMethodName,
+		FullMethod: JiraPuller_FetchProject_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JiraPullerServer).GetProject(ctx, req.(*Key))
+		return srv.(JiraPullerServer).FetchProject(ctx, req.(*Key))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -150,8 +150,8 @@ var JiraPuller_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _JiraPuller_GetProjects_Handler,
 		},
 		{
-			MethodName: "GetProject",
-			Handler:    _JiraPuller_GetProject_Handler,
+			MethodName: "FetchProject",
+			Handler:    _JiraPuller_FetchProject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

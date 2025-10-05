@@ -4,7 +4,7 @@ option go_package = "./pb";
 
 service JiraPuller{
     rpc GetProjects(ProjectsRequest) returns (ProjectsResponse){}
-    rpc GetProject(Key) returns (ID){};
+    rpc FetchProject(Key) returns (ID){};
 }
 
 message ProjectsRequest {

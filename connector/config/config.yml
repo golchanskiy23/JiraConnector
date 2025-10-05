@@ -8,7 +8,7 @@ database:
 service_config:
   address: 127.0.0.1
   port: 8080
-  jiraUrl: https://issues.apache.org/jira/rest/api/2/
+  jiraUrl: https://jira.atlassian.com/rest/api/2/
   thread: 5
   issueInOneRequest: 75
   maxTimeSleep: 300ms

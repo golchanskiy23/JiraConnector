@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -20,13 +21,13 @@ type Database struct {
 }
 
 type MicroserviceConfig struct {
-	Address       string `mapstructure:"address"`
-	Port          int    `mapstructure:"port"`
-	JiraURL       string `mapstructure:"jiraUrl"`
-	Thread        int    `mapstructure:"thread"`
-	IssueInOneReq int    `mapstructure:"issueInOneRequest"`
-	MaxTimeSleep  string `mapstructure:"maxTimeSleep"`
-	MinTimeSleep  string `mapstructure:"minTimeSleep"`
+	Address       string         `mapstructure:"address"`
+	Port          int            `mapstructure:"port"`
+	JiraURL       string         `mapstructure:"jiraUrl"`
+	Thread        int            `mapstructure:"thread"`
+	IssueInOneReq int            `mapstructure:"issueInOneRequest"`
+	MaxTimeSleep  *time.Duration `mapstructure:"maxTimeSleep"`
+	MinTimeSleep  *time.Duration `mapstructure:"minTimeSleep"`
 }
 
 func NewConfig() (*Config, error) {
