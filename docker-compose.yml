@@ -1,8 +1,27 @@
 #version: "3.8"
 
 services:
+  connector:
+    #image: postgres
+    build:
+      context: ./connector
+      dockerfile: Dockerfile
+    container_name: "jira-connector"
+    ports:
+      - 8567:8567
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: testdb
+    restart: always
+    volumes:
+      - ./database/init:/docker-entrypoint-initdb.d
+
   db:
-    image: postgres
+    #image: postgres
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     container_name: "jira_postgres_database"
     ports:
       - 5432:5432
